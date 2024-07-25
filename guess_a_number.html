@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeu de Deviner le Nombre</title>
+  <style>
+    #game-container {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="setup-container">
+    <h1>Joueur 1, choisissez un nombre</h1>
+    <p>0 < ? < 50</p>
+    <input type="number" id="number-to-guess" min="0" max="50">
+    <button onclick="setupGame()">Valider</button>
+  </div>
+
+  <div id="game-container">
+    <h1>Joueur 2, devinez le nombre</h1>
+    <p>0 < ? < 50</p>
+    <input type="number" id="guess-input">
+    <button onclick="submitGuess()">Valider</button>
+    <p id="attempts">Tentatives : 0</p>
+  </div>
+
+  <script src="guess_a_number2.js"></script>
+</body>
+</html>
