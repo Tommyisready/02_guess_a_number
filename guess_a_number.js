@@ -1,90 +1,101 @@
-let givenNumber1;
+//etape 1 à 3
+// function what_number() {
+//   let ask = prompt("Choisis un nombre");
+//   given_number = parseInt(ask);
+//   return given_number;
+// }
+// what_number();
 
-function type_a_number() {
-  givenNumber1 = parseInt(prompt("Saisissez un nombre"));
-  console.log("Le nombre saisi est :", givenNumber1);
-  return givenNumber1;
+// function did_i_win(given_number) {
+//   if (given_number < 22) {
+//     alert("Plus grand");
+//     return false;
+//   }
+//   if (given_number > 22) {
+//     alert("Plus petit");
+//     return false;
+//   } else if (given_number === 22) {
+//     alert("Bravo, tu as gagné");
+//     return true;
+//   }
+// }
+
+// did_i_win(given_number);
+
+// function gameplay() {
+//   let won = false;
+//   while (!won) {
+//     let number = what_number();
+//     won = did_i_win(number);
+//   }
+//   alert("nice, le jeu s'arrête");
+// }
+
+// gameplay();
+
+//  Etape 4 à 6 avec html + js
+let guessNumber; // Variable pour stocker le nombre à deviner
+let attempts = 0; // Variable pour compter le nombre de tentatives
+
+// Fonction appelée lorsque joueur 1 valide son nombre
+function setupGame() {
+  // Récupère la valeur entrée par joueur 1 et la convertit en nombre entier
+  const numberInput = document.getElementById("number-to-guess").value;
+  guessNumber = parseInt(numberInput, 10);
+
+  // Vérifie si le nombre est valide (entre 0 et 50)
+  if (!isNaN(guessNumber) && guessNumber >= 0 && guessNumber <= 50) {
+    // Cache le conteneur de configuration et affiche le conteneur de jeu
+    document.getElementById("setup-container").style.display = "none";
+    document.getElementById("game-container").style.display = "block";
+  } else {
+    // Affiche une alerte si le nombre n'est pas valide
+    alert("Veuillez entrer un nombre valide entre 0 et 50");
+  }
 }
 
-// Définir la constante numberToGuess qui est 22
-const numberToGuess = 22;
+// Fonction pour vérifier si le joueur 2 a deviné le bon nombre
+function did_i_win(given_number, guess) {
+  attempts++; // Incrémente le compteur de tentatives
 
-// Définir la fonction didIWin qui prend en paramètre givenNumber
-function didIWin(givenNumber) {
-  if (givenNumber < numberToGuess) {
-    alert("Plus grand");
+  // Compare le nombre deviné avec le nombre donné
+  if (given_number < guess) {
+    // Si le nombre donné est plus petit, affiche "Plus petit"
+    document.getElementById("message").innerText = "Plus petit";
     return false;
-  } else if (givenNumber > numberToGuess) {
-    alert("Plus petit");
+  }
+  if (given_number > guess) {
+    // Si le nombre donné est plus grand, affiche "Plus grand"
+    document.getElementById("message").innerText = "Plus grand";
     return false;
-  } else {
-    alert("Bravo ! Vous avez deviné le nombre");
+  } else if (given_number === guess) {
+    // Si le nombre donné est correct, affiche "Tu as gagné"
+    document.getElementById("message").innerText = "Tu as gagné";
     return true;
   }
 }
 
-// Définir la fonction gamePlay
-function gamePlay() {
-  let found = false;
+// Fonction appelée lorsque joueur 2 soumet une devinette
+function submitGuess() {
+  // Récupère la valeur entrée par joueur 2 et la convertit en nombre entier
+  const guessInput = document.getElementById("guess-input").value;
+  const guess = parseInt(guessInput, 10);
 
-  while (!found) {
-    // Demander à l'utilisateur un nombre
-    let userInput = prompt("Devinez le nombre :");
+  // Vérifie si le nombre est valide (entre 0 et 50)
+  if (!isNaN(guess) && guess >= 0 && guess <= 50) {
+    // Appelle la fonction did_i_win pour vérifier la devinette
+    const found = did_i_win(guess, guessNumber);
 
-    // Convertir l'input en nombre
-    let givenNumber = parseInt(userInput, 10);
-
-    // Appeler la fonction didIWin avec le nombre donné par l'utilisateur
-    found = didIWin(givenNumber);
-  }
-}
-
-// Appeler la fonction gamePlay pour démarrer le jeu
-gamePlay();
-
-// etape 4
-
-// Fonction pour demander au joueur 1 de fournir un nombre à deviner compris entre 0 et 50
-function getNumberFromPlayer1() {
-  let numberToGuess;
-  do {
-    let userInput = prompt(
-      "Joueur 1, entrez un nombre à deviner entre 0 et 50 :"
-    );
-    numberToGuess = parseInt(userInput, 10);
-  } while (isNaN(numberToGuess) || numberToGuess < 0 || numberToGuess > 50);
-  return numberToGuess;
-}
-
-// Fonction didIWin qui prend en paramètre givenNumber et numberToGuess
-function didIWin(givenNumber, numberToGuess) {
-  if (givenNumber < numberToGuess) {
-    alert("Plus grand");
-    return false;
-  } else if (givenNumber > numberToGuess) {
-    alert("Plus petit");
-    return false;
+    // Si la devinette est incorrecte, met à jour le nombre de tentatives
+    if (!found) {
+      document.getElementById("attempts").innerText = `Nombre de tentatives : ${attempts}`;
+    } else {
+      // Si la devinette est correcte, cache le champ de saisie et le bouton
+      document.getElementById("guess-input").style.display = "none";
+      document.querySelector("#game-container button").style.display = "none";
+    }
   } else {
-    alert("Bravo ! Vous avez deviné le nombre");
-    return true;
+    // Affiche une alerte si le nombre n'est pas valide
+    alert("Veuillez entrer un nombre valide entre 0 et 50");
   }
 }
-
-// Fonction gamePlay pour gérer la partie
-function gamePlay() {
-  // Joueur 1 fournit le nombre à deviner
-  const numberToGuess = getNumberFromPlayer1();
-  let found = false;
-
-  // Joueur 2 essaie de deviner le nombre
-  while (!found) {
-    let userInput = prompt("Joueur 2, devinez le nombre :");
-    let givenNumber = parseInt(userInput, 10);
-
-    // Appeler la fonction didIWin avec le nombre donné par le joueur 2 et le nombre à deviner
-    found = didIWin(givenNumber, numberToGuess);
-  }
-}
-
-// Appeler la fonction gamePlay pour démarrer le jeu
-gamePlay();
